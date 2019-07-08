@@ -1,0 +1,8 @@
+{% extends "i2iCellApp/base.html" %}
+{% block content %}
+    {% for post in posts %}
+    <h1>Phone Number: {{post.phoneNum}}</h1>
+    <p>Password: {{post.password}}</p>
+    {% endfor %}
+{% endblock %}
+

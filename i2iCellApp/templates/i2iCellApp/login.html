@@ -14,25 +14,25 @@
 
 <div class=”container”>
     <div class="my_table">
-        <form method="post" class="login_form">
+        <form action="{% url 'login' %}" method="post" class="login_form">
             {% csrf_token %}
             <div class="row">
                 <div class="col-md-6">
-                    <div class="phone_num">Telefon
+                    <div class="login_text">Telefon
                         <p>numaranız</p>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <input type="text" name="phone_num" class="input_border" style="width: 40%">
+                    <input type="text" name="phone_num" class="input_border" style="width: 60%; border-style: solid; border-width: 1px; color: #ddd; height: 70%;">
                     </input>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <div class="sifreniz">Şifreniz</div>
+                    <div class="login_text">Şifreniz</div>
                 </div>
                 <div class="col-md-6">
-                    <input type="text" name="password" class="input_border" style="width: 40%">
+                    <input type="text" name="password" class="input_border" style="width: 60%; border-style: solid; border-width: 1px; color: #ddd; height: 70%;">
                     </input>
                 </div>
             </div>
@@ -46,10 +46,21 @@
                            onclick="location.href='{% url 'login' %}'"></input>
 
                 </div>
-                <div class="col-md-3">
-                    <input type="submit" class="sifremi_unuttum_button" value="Sifremi unuttum" name="forgot_button"
-                           onclick="location.href='{% url 'homepage' %}'" style="text-align: center;"></input>
-                </div>
+                <form action="{% url 'forgotPassword' %}">
+                    <div class="col-md-3">
+                        <input type="submit" class="sifremi_unuttum_button" value="Sifremi unuttum" name="forgot_button"
+                               style="text-align: center;"></input>
+                    </div>
+                </form>
+
+
+            </div>
+            <div class="container" style="margin-bottom: 20%;">
+                <form action="{% url 'register' %}">
+                    <div class="kayitli_degil">Kayitli Degil Misin?</div>
+                    <input type="submit" class="register_button" value="Yeni Profil Yarat"
+                           name="register_button" style="text-align: center;">
+                </form>
 
             </div>
         </form>
@@ -64,11 +75,6 @@
         </ul>
         {% endif %}
 
-        <div class="container">
-            <div class="kayitli_degil">Kayitli Degil Misin?</div>
-            <input type="submit" class="new_profile_button" value="Yeni Profil Yarat" name="register_profile"
-                   onclick="location.href='{% url 'register' %}'" style="text-align: center;">
-        </div>
 
     </div>
 

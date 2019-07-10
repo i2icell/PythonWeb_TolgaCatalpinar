@@ -142,23 +142,23 @@
 }
 .my_table
 {
-  margin-left: 15%;
-  margin-right: 15%;
-  top: 2%;
+  width: 80%;
   border-style: solid;
   border-width: 1px;
   color: #ddd;
-  height: 500px;
+  height: 90%;
+  margin-left: 10%;
 }
 .login_form
 {
   margin-left: 5%;
   margin-top: 15%;
+
 }
 .register_form
 {
-  margin-left: 5%;
-  margin-top: 3%;
+  margin-left: 15%;
+  margin-top: 2%;;
 }
 .input_border
 {
@@ -166,6 +166,7 @@
   border-style: solid;
   border-width: 1px;
   border-color: #ddd;
+
 }
 .kayitli_degil
 {
@@ -177,7 +178,7 @@
   font-weight: 30;
   text-align: center;
 }
-.new_profile_button
+.register_button
 {
   width: 20%;
   height: 30%;
@@ -216,6 +217,18 @@
   text-align: center;
   margin-right: 10%;
 }
+.login_text
+{
+width: 40%;
+  height: 10%;
+  color: #a29f9f;
+  font-family: Sura;
+  font-size: 10%px;
+  font-weight: 700;
+  line-height: 100%;
+  text-align: center;
+  margin-right: 10%;
+}
 
 .create_user_button
 {
@@ -228,7 +241,7 @@
   font-size: 20px;
   font-weight: 50;
   line-height: 100%;
-  margin-left: 40%;
+  margin-left: 31%;
 }
 .save_new_password_button
 {

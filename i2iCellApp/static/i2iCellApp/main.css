@@ -255,3 +255,30 @@ width: 20%;
   font-weight: 50;
   line-height: 100%;
   margin-left: 40%;}
+
+.example-two {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid #0B7BE9;
+            text-align: center;
+ }
+.balance_images
+{
+    height: 40%;
+    width: 100%;
+    margin-left: 140%;
+    margin-top: 20%;
+}
+.balance_text
+{
+    margin-top: 20%;
+    font-size: 30px;
+    color: black;
+}
+.balance_sub_text
+{
+    margin-top: -5%;
+    font-size: 30px;
+    color: black;
+}

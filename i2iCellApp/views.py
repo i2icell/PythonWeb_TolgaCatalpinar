@@ -220,3 +220,6 @@ def isUserOldEnough(yearConstraint, birthDate):
     dayDifference = lDate - fDate
 
     return (dayDifference.days / 365 > yearConstraint)
+
+def getBalances(request):
+    return render(request, 'i2iCellApp/getBalances.html')

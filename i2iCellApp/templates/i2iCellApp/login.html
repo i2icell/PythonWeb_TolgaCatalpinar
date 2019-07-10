@@ -1,8 +1,76 @@
 {% extends "i2iCellApp/base.html" %}
-{% block content %}
-    {% for post in posts %}
-    <h1>Phone Number: {{post.phoneNum}}</h1>
-    <p>Password: {{post.password}}</p>
-    {% endfor %}
-{% endblock %}
+{% load static %}
 
+<!-- Bootstrap CSS
+{% for post in posts %}
+<h1 style="margin-left: 20%">Phone Number: {{post.phoneNum}}</h1>
+<p>Password: {{post.password}}</p>
+{% endfor %}
+
+-->
+
+
+{% block content %}
+
+<div class=”container”>
+    <div class="my_table">
+        <form method="post" class="login_form">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="phone_num">Telefon
+                        <p>numaranız</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" name="phone_num" class="input_border" style="width: 40%">
+                    </input>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="sifreniz">Şifreniz</div>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" name="password" class="input_border" style="width: 40%">
+                    </input>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+
+                </div>
+                <div class="col-md-3">
+                    <input type="submit" class="login_button" value="Giris" name="login_button"
+                           style="text-align: center;"
+                           onclick="location.href='{% url 'login' %}'"></input>
+
+                </div>
+                <div class="col-md-3">
+                    <input type="submit" class="sifremi_unuttum_button" value="Sifremi unuttum" name="forgot_button"
+                           onclick="location.href='{% url 'forgot_password' %}'" style="text-align: center;"></input>
+                </div>
+
+            </div>
+        </form>
+
+        <!-- <div name="status" class="customDiv" id="status">Status:</div> -->
+
+        {% if messages %}
+        <ul class="messages" style="color:red; text-align:center">
+            {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        <div class="container">
+            <div class="kayitli_degil">Kayitli Degil Misin?</div>
+            <input type="submit" class="new_profile_button" value="Yeni Profil Yarat" name="new_profile"
+                   style="text-align: center;">
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

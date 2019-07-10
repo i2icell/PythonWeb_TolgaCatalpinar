@@ -144,7 +144,7 @@
 {
   margin-left: 15%;
   margin-right: 15%;
-  bottom: 15%;
+  top: 2%;
   border-style: solid;
   border-width: 1px;
   color: #ddd;
@@ -154,6 +154,11 @@
 {
   margin-left: 5%;
   margin-top: 15%;
+}
+.register_form
+{
+  margin-left: 5%;
+  margin-top: 3%;
 }
 .input_border
 {
@@ -198,3 +203,42 @@
   text-align: center;
   margin-right: 10%;
 }
+
+.register_text
+{
+    width: 40%;
+  height: 10%;
+  color: #a29f9f;
+  font-family: Sura;
+  font-size: 10%px;
+  font-weight: 700;
+  line-height: 100%;
+  text-align: center;
+  margin-right: 10%;
+}
+
+.create_user_button
+{
+    width: 20%;
+  height: 50%;
+  -webkit-text-stroke: solid 3px #808080
+  text-shadow: inset 10px 10px 4px rgba(100,100,100,0.5);
+  color: #686868;
+  font-family: Sura;
+  font-size: 20px;
+  font-weight: 50;
+  line-height: 100%;
+  margin-left: 40%;
+}
+.save_new_password_button
+{
+width: 20%;
+  height: 50%;
+  -webkit-text-stroke: solid 3px #808080
+  text-shadow: inset 10px 10px 4px rgba(100,100,100,0.5);
+  color: #686868;
+  font-family: Sura;
+  font-size: 20px;
+  font-weight: 50;
+  line-height: 100%;
+  margin-left: 40%;}

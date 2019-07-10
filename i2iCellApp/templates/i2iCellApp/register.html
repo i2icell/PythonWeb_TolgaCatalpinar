@@ -1,0 +1,191 @@
+{% extends "i2iCellApp/base.html" %}
+{% load static %}
+
+
+{% block content %}
+<div class=”container”>
+    <div class="my_table">
+        <form method="post" class="register_form">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="register_text">Tc Kimlik No
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" name="tc_no" class="input_border" style="width: 40%">
+                    </input>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="register_text">Adiniz</div>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" name="user_name" class="input_border" style="width: 40%">
+                    </input>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="register_text">Soyadiniz</div>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" name="user_last_name" class="input_border" style="width: 40%">
+                    </input>
+                </div>
+            </div>
+
+            <!-- -->
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="register_text">Dogum Tarihi</div>
+                </div>
+                <div class="col-md-2">
+                    <select style="display: block;" id="day_box">
+                        <option></option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>7</option>
+                        <option>8</option>
+                        <option>9</option>
+                        <option>10</option>
+                        <option>11</option>
+                        <option>12</option>
+                        <option>13</option>
+                        <option>14</option>
+                        <option>15</option>
+                        <option>16</option>
+                        <option>17</option>
+                        <option>18</option>
+                        <option>19</option>
+                        <option>20</option>
+                        <option>21</option>
+                        <option>22</option>
+                        <option>23</option>
+                        <option>24</option>
+                        <option>25</option>
+                        <option>26</option>
+                        <option>27</option>
+                        <option>28</option>
+                        <option>29</option>
+                        <option>30</option>
+                        <option>31</option>
+
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select style="display: block;" id="month_box">
+                        <option></option>
+                        <option>Ocak</option>
+                        <option>Subat</option>
+                        <option>Mart</option>
+                        <option>Nisan</option>
+                        <option>Mayis</option>
+                        <option>Haziran</option>
+                        <option>Temmuz</option>
+                        <option>Agustos</option>
+                        <option>Eylul</option>
+                        <option>Ekim</option>
+                        <option>Kasim</option>
+                        <option>Aralik</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select style="display: block;" id="year_box">
+                        <option></option>
+                        <option>1999</option>
+                        <option>2000</option>
+                        <option>2001</option>
+                        <option>2002</option>
+                        <option>2003</option>
+                        <option>2004</option>
+                        <option>2005</option>
+                        <option>2006</option>
+                        <option>2007</option>
+                        <option>2008</option>
+                        <option>2009</option>
+                        <option>2010</option>
+                        <option>2011</option>
+                        <option>2012</option>
+                        <option>2013</option>
+                        <option>2014</option>
+                        <option>2015</option>
+                        <option>2016</option>
+                        <option>2017</option>
+                        <option>2018</option>
+                        <option>2019</option>
+
+                    </select>
+                </div>
+            </div>
+
+
+            <!-- TARİHİ EKLE -->
+
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="register_text">Telefon Numaraniz
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" name="phone_number" class="input_border" style="width: 40%">
+                    </input>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="register_text">Sifreniz</div>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" name="password" class="input_border" style="width: 40%">
+                    </input>
+                </div>
+            </div>
+
+
+            <input type="submit" class="create_user_button" value="Kaydet" name="create_user_button"
+                   onclick="location.href='{% url 'homepage' %}'" style="text-align: center;">
+
+        </form>
+
+        <!-- <div name="status" class="customDiv" id="status">Status:</div> -->
+
+        {% if messages %}
+        <ul class="messages" style="color:red; text-align:center">
+            {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+
+    </div>
+
+</div>
+
+<script>
+    function addYears()
+    {
+        var elm = document.getElementById('year_box');
+        for (var i = 1990; i <= 2000; i++)
+        { // loop, i like 42.
+        var option = document.createElement('option'); // create the option element
+        option.value = i; // set the value property
+        option.appendChild(document.createTextNode("option #" + i)); // set the textContent in a safe way.
+        df.appendChild(option); // append the option to the document fragment
+        }
+    elm.appendChild(df);
+    }
+
+</script>
+{% endblock %}
+
+

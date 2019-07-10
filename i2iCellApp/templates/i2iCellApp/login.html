@@ -48,7 +48,7 @@
                 </div>
                 <div class="col-md-3">
                     <input type="submit" class="sifremi_unuttum_button" value="Sifremi unuttum" name="forgot_button"
-                           onclick="location.href='{% url 'forgot_password' %}'" style="text-align: center;"></input>
+                           onclick="location.href='{% url 'homepage' %}'" style="text-align: center;"></input>
                 </div>
 
             </div>
@@ -66,8 +66,8 @@
 
         <div class="container">
             <div class="kayitli_degil">Kayitli Degil Misin?</div>
-            <input type="submit" class="new_profile_button" value="Yeni Profil Yarat" name="new_profile"
-                   style="text-align: center;">
+            <input type="submit" class="new_profile_button" value="Yeni Profil Yarat" name="register_profile"
+                   onclick="location.href='{% url 'register' %}'" style="text-align: center;">
         </div>
 
     </div>

@@ -18,7 +18,7 @@ proxies = {
 
 loginEndpoint = 'http://68.183.75.84:8080/i2iCellService/services/Services/login'
 registerEndpoint = 'http://68.183.75.84:8080/i2iCellService/services/Services/createAccount'
-
+getBalancesEndpoint = 'http://68.183.75.84:8080/i2iCellService/services/Services/getBalances'
 
 def loginEncodeUrl(inputPhoneNumber, inputPassword):
     qd = QueryDict(mutable=True)
@@ -48,6 +48,7 @@ def login(request):
         else:
             try:
                 response = requests.get(loginEncodeUrl(inputPhoneNumber, inputPassword), proxies=proxies)
+                request.session['phoneNumber'] = inputPhoneNumber
             except ConnectionError as e:
                 print(e)
                 messages.error(request, "Internet baglantiniz yok!")
@@ -110,38 +111,43 @@ def register(request):
         password = post.get('password')
         email = post.get('email')
 
-        if not isValidTCID(tcNo):
-            messages.error(request, "Verilen Kimlik Numarasi Bilgileri Yanlistir!")
-        elif not isUserOldEnough(12, birthDate):
-            messages.error(request, "Kayit olmak icin yasiniz yetmemektedir.")
-        elif not (len(phoneNumber) > 0 and len(password) > 0 and len(userLastName) > 0 and \
+        try:
+            if not isValidTCID(tcNo):
+                messages.error(request, "Verilen Kimlik Numarasi Bilgileri Yanlistir!")
+
+            elif not isUserOldEnough(12, birthDate):
+                messages.error(request, "Kayit olmak icin yasiniz yetmemektedir.")
+
+            elif not (len(phoneNumber) > 0 and len(password) > 0 and len(userLastName) > 0 and \
                   (len(day) > 0 and len(month) > 0 and len(year) > 0) and len(phoneNumber) > 0 and len(password) > 0):
-            messages.error(request, "Bos alan birakilmamalidir!")
-        elif not (phoneNumber[0] != 0 and len(phoneNumber) == 10):
-            messages.error(request, "Telefon numaranizi basinda 0 olmadan 10 haneli giriniz.")
+                messages.error(request, "Bos alan birakilmamalidir!")
+            elif not (phoneNumber[0] != 0 and len(phoneNumber) == 10):
+                messages.error(request, "Telefon numaranizi basinda 0 olmadan 10 haneli giriniz.")
 
-        elif not isValidPhoneNumber(phoneNumber):
-            messages.error(request, "Telefon numaraniz sadece rakamlardan olusabilir.")
-        elif not isValidPassword(password):
-            messages.error(request,
+            elif not isValidPhoneNumber(phoneNumber):
+                messages.error(request, "Telefon numaraniz sadece rakamlardan olusabilir.")
+            elif not isValidPassword(password):
+                messages.error(request,
                            "Sifreniz en az 10 karakterli olmali, kücük harf, büyük harf ve en az bir rakam icermelidir.")
-        elif not isValidEmail(email):
-            messages.error(request, "Bu email adresi gecerli degildir.")
-        else:
-            try:
-                response = requests.get(registerEncodeUrl(userName, userLastName,phoneNumber, email, password, birthDate, tcNo), proxies=proxies)
-            except ConnectionError as e:
-                print(e)
-                messages.error(request, "Internet baglantiniz yok!")
-
-            result = returnValidationValue(response.text)
-
-            if result == '1':
-                return render(request, 'i2iCellApp/homepage.html')
+            elif not isValidEmail(email):
+                messages.error(request, "Bu email adresi gecerli degildir.")
             else:
-                messages.error(request, "Bu telefon numarasi zaten mevcut.")
-                return render(request, 'i2iCellApp/register.html')
+                try:
+                    response = requests.get(registerEncodeUrl(userName, userLastName,phoneNumber, email, password, birthDate, tcNo), proxies=proxies)
+                    request.session['phoneNumber'] = phoneNumber
+                except ConnectionError as e:
+                    print(e)
+                    messages.error(request, "Internet baglantiniz yok!")
 
+                result = returnValidationValue(response.text)
+
+                if result == '1':
+                    return render(request, 'i2iCellApp/homepage.html')
+                else:
+                    messages.error(request, "Bu telefon numarasi zaten mevcut.")
+                    return render(request, 'i2iCellApp/register.html')
+        except:
+                messages.error(request, "Gecerli bir tarih giriniz.")
 
     return render(request, 'i2iCellApp/register.html')
 
@@ -221,5 +227,57 @@ def isUserOldEnough(yearConstraint, birthDate):
 
     return (dayDifference.days / 365 > yearConstraint)
 
+def getBalancesEncodeUrl(inputPhoneNumber):
+    qd = QueryDict(mutable=True)
+    qd.update(
+        inputPhoneNumber=inputPhoneNumber,
+    )
+
+    url = '{}?{}'.format(getBalancesEndpoint, qd.urlencode())
+    return url
+
 def getBalances(request):
+    phoneNumber = request.session['phoneNumber']
+    messages.error(request, "phone number: " + phoneNumber)
+
+
+    #response = requests.get("http://68.183.75.84:8080/i2iCellService/services/Services/getBalances?inputPhoneNumber=5552239999", proxies = proxies)
+    response = requests.get(getBalancesEncodeUrl(phoneNumber), proxies = proxies)
+    print(response.text)
+    balances = extractBalances(request, response.text)
+    messages.error(request, "1- " + balances[0])
+    messages.error(request, "2- " + balances[1])
+    messages.error(request, "3- " + balances[2])
+
+
     return render(request, 'i2iCellApp/getBalances.html')
+
+def extractBalances(request, response):
+
+    balances = []
+    try:
+        searchedValue = "<ns:return>"
+
+        count = 0
+
+        endingIndexOfStartReturn = []
+        for match in re.finditer(searchedValue, response):
+            print(match.end())
+            endingIndexOfStartReturn.append(match.end())
+            count += 1
+
+        searchedValue = "</ns:return>"
+
+        startingIndexOfEndReturn = []
+        for match in re.finditer(searchedValue, response):
+            print(match.start())
+            startingIndexOfEndReturn.append(match.start())
+
+
+        for i in range(len(endingIndexOfStartReturn)):
+            balances.append(response[endingIndexOfStartReturn[i]: startingIndexOfEndReturn[i]])
+            print(response[endingIndexOfStartReturn[i]: startingIndexOfEndReturn[i]])
+
+    except:
+        messages.error(request, "an error occurred")
+    return balances

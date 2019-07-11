@@ -237,20 +237,21 @@ def getBalancesEncodeUrl(inputPhoneNumber):
     return url
 
 def getBalances(request):
-    phoneNumber = request.session['phoneNumber']
-    messages.error(request, "phone number: " + phoneNumber)
+    try:
+        phoneNumber = request.session['phoneNumber']
+        messages.error(request, "phone number: " + phoneNumber)
 
+        # response = requests.get("http://68.183.75.84:8080/i2iCellService/services/Services/getBalances?inputPhoneNumber=5552239999", proxies = proxies)
+        response = requests.get(getBalancesEncodeUrl(phoneNumber), proxies=proxies)
+        print(response.text)
+        balances = extractBalances(request, response.text)
+        gb = balances[0]
+        sms = balances[1]
+        dk = balances[2]
 
-    #response = requests.get("http://68.183.75.84:8080/i2iCellService/services/Services/getBalances?inputPhoneNumber=5552239999", proxies = proxies)
-    response = requests.get(getBalancesEncodeUrl(phoneNumber), proxies = proxies)
-    print(response.text)
-    balances = extractBalances(request, response.text)
-    messages.error(request, "1- " + balances[0])
-    messages.error(request, "2- " + balances[1])
-    messages.error(request, "3- " + balances[2])
-
-
-    return render(request, 'i2iCellApp/getBalances.html')
+        return render(request, 'i2iCellApp/getBalances.html', {'gb': gb, 'sms' : sms, 'dk' : dk})
+    except:
+        return render(request, 'i2iCellApp/login.html')
 
 def extractBalances(request, response):
 

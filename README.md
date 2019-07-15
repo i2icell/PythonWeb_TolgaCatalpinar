@@ -36,6 +36,7 @@
 First, go to the directory of file, then type this command: "python manage.py runserver"
 ![runserver](https://user-images.githubusercontent.com/34005953/61234365-8e128c00-a73b-11e9-8633-43fa3ff1f59f.PNG)
 
+![login](https://user-images.githubusercontent.com/34005953/61234650-4b04e880-a73c-11e9-9997-d6769c281759.PNG)
 
                                              HOW TO CREATE A DJANGO PROJECT
                                                         

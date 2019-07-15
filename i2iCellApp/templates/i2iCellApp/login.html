@@ -42,7 +42,7 @@
                 </div>
                 <div class="col-md-3">
                     <input type="submit" class="login_button" value="Giris" name="login_button"
-                           style="text-align: center;"
+                           style="text-align: center; "
                            onclick="location.href='{% url 'login' %}'"></input>
 
                 </div>
@@ -57,7 +57,7 @@
             </div>
             <div class="container" style="margin-bottom: 20%;">
                 <form action="{% url 'register' %}">
-                    <div class="kayitli_degil">Kayitli Degil Misin?</div>
+                    <div class="kayitli_degil" >Kayitli Degil Misin?</div>
                     <input type="submit" class="register_button" value="Yeni Profil Yarat"
                            name="register_button" style="text-align: center;">
                 </form>

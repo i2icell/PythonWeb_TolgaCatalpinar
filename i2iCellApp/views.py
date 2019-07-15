@@ -1,24 +1,25 @@
 from django.shortcuts import render
 from django.contrib import messages
-from django.http import HttpResponse
 from requests.exceptions import ConnectionError
 import requests
-from django.views.decorators.csrf import csrf_exempt
-import os
 from django.http import QueryDict
 import re
 from datetime import date
 
-# Create your views here.
+
 
 proxies = {
     "http": None,
     "https": None,
 }
 
+
 loginEndpoint = 'http://68.183.75.84:8080/i2iCellService/services/Services/login'
 registerEndpoint = 'http://68.183.75.84:8080/i2iCellService/services/Services/createAccount'
 getBalancesEndpoint = 'http://68.183.75.84:8080/i2iCellService/services/Services/getBalances'
+
+
+#---------------------------------------LOGIN------------------------------------------
 
 def loginEncodeUrl(inputPhoneNumber, inputPassword):
     qd = QueryDict(mutable=True)
@@ -30,6 +31,19 @@ def loginEncodeUrl(inputPhoneNumber, inputPassword):
     url = '{}?{}'.format(loginEndpoint, qd.urlencode())
     return url
 
+def returnValidationValue(response):
+    try:
+        searchedValue = "<ns:return>"
+
+        lengthOfSeachedValue = len(searchedValue)
+
+        startingIndexOfValue = response.index(searchedValue)
+        lengthOfReturnValue = 1
+
+        startingIndexOfReturnValue = startingIndexOfValue + lengthOfSeachedValue
+        return (response[startingIndexOfReturnValue: startingIndexOfReturnValue + lengthOfReturnValue])
+    except:
+        return 0
 
 def login(request):
     post = request.POST.copy()
@@ -56,7 +70,7 @@ def login(request):
             result = returnValidationValue(response.text)
 
             if result == '1':
-                return render(request, 'i2iCellApp/homepage.html')
+                return render(request, 'i2iCellApp/getBalances.html')
             else:
                 messages.error(request, "Yanlis Kullanici Numarasi Veya Sifre!")
 
@@ -68,12 +82,16 @@ def login(request):
     return render(request, 'i2iCellApp/login.html')
 
 
+
+#---------------------------------------FORGOT PASSWORD-----------------------------------------
 def forgotPassword(request):
     post = request.POST.copy()
     if post.get('save_button'):
         print("forgot in")
     return render(request, 'i2iCellApp/forgotPassword.html')
 
+
+#---------------------------------------REGISTER-------------------------------------
 
 def registerEncodeUrl(inputFirstName, inputLastName, inputPhoneNumber, inputEmail, inputPassword, inputBirthDate,
                       inputTcNumber):
@@ -142,7 +160,7 @@ def register(request):
                 result = returnValidationValue(response.text)
 
                 if result == '1':
-                    return render(request, 'i2iCellApp/homepage.html')
+                    return render(request, 'i2iCellApp/login.html')
                 else:
                     messages.error(request, "Bu telefon numarasi zaten mevcut.")
                     return render(request, 'i2iCellApp/register.html')
@@ -152,24 +170,14 @@ def register(request):
     return render(request, 'i2iCellApp/register.html')
 
 
-def returnValidationValue(response):
-    try:
-        searchedValue = "<ns:return>"
 
-        lengthOfSeachedValue = len(searchedValue)
-
-        startingIndexOfValue = response.index(searchedValue)
-        lengthOfReturnValue = 1
-
-        startingIndexOfReturnValue = startingIndexOfValue + lengthOfSeachedValue
-        return (response[startingIndexOfReturnValue: startingIndexOfReturnValue + lengthOfReturnValue])
-    except:
-        return 0
-
+#---------------------------------HOMEPAGE-------------------------------
 
 def homepage(request):
     return render(request, 'i2iCellApp/homepage.html')
 
+
+#------------------------------VALIDATIONS-------------------------------
 
 def isValidPhoneNumber(inputPhoneText):
     return inputPhoneText.isdigit()
@@ -227,6 +235,10 @@ def isUserOldEnough(yearConstraint, birthDate):
 
     return (dayDifference.days / 365 > yearConstraint)
 
+
+
+#---------------------------------GET_BALANCE--------------------------------------
+
 def getBalancesEncodeUrl(inputPhoneNumber):
     qd = QueryDict(mutable=True)
     qd.update(
@@ -239,7 +251,7 @@ def getBalancesEncodeUrl(inputPhoneNumber):
 def getBalances(request):
     try:
         phoneNumber = request.session['phoneNumber']
-        messages.error(request, "phone number: " + phoneNumber)
+        messages.info(request, "phone number: " + phoneNumber)
 
         # response = requests.get("http://68.183.75.84:8080/i2iCellService/services/Services/getBalances?inputPhoneNumber=5552239999", proxies = proxies)
         response = requests.get(getBalancesEncodeUrl(phoneNumber), proxies=proxies)
